@@ -90,11 +90,11 @@ class Pokemon extends React.Component {
         <div className="card has-background-white-bis" style={ styles }>
           <header className="card-header">
             <img src={ sprites ? sprites.front_default : name } alt={ name } />
-            <p className="card-header-title is-capitalized">{ name }</p>
+            <p className="card-header-title is-capitalized is-size-6">{ name }</p>
           </header>
 
           <div className="card-content">
-            <div className="content is-size-7 has-text-grey">
+            <div className="content is-size-7 has-text-grey-dark">
               <p>Order: { order }</p>   
               <p>Height: { height }</p>   
               <p>Weight: { weight }</p>   
@@ -103,7 +103,7 @@ class Pokemon extends React.Component {
 
           <footer className="card-footer">
             { types ? types.map(type => (
-              <a className={ "card-footer-item is-size-7 has-text-weight-bold " + this.getTypeClassname(type.type.name) } key={type.type.name} >{  type.type.name }</a>
+              <p className={ "card-footer-item is-size-7 has-text-weight-bold " + this.getTypeClassname(type.type.name) } key={type.type.name} >{  type.type.name }</p>
             )) : 'nop'}
           </footer>
 
