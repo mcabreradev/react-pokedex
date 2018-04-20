@@ -1,8 +1,9 @@
 import React from "react";
 import { render } from "react-dom";
 
+import 'bulma/css/bulma.css'
+
 import Header from "./Header";
-import Hello from "./Hello";
 import Pokedex from "./Pokedex";
 
 const styles = {};
