@@ -1,11 +1,10 @@
 import React from "react";
 import { render } from "react-dom";
 
-import 'bulma/css/bulma.css'
+import Header from "./Common/Header";
+import Pokedex from "./Components/Pokedex/Pokedex";
 
-import Header from "./Header";
-import Pokedex from "./Pokedex";
-
+import 'bulma/css/bulma.css';
 const styles = {};
 
 const App = () => (
