@@ -6,7 +6,6 @@ const styles = {
   padding: "5px 5px 5px 0px"
 };
 
-
 function NoPokemon() {
   return (
     <div className="column is-4 has-background-light" style={styles}>
@@ -61,7 +60,7 @@ class Pokemon extends React.Component {
     const { pokemon } = this.state;
 
     return pokemon ? (
-      <div className="column is-2">
+      <div className="column is-2-desktop is-3-tablet">
         <div className="card has-background-white-bis" style={ styles }>
           <header className="card-header">
             <img src={ pokemon ? pokemon.ThumbnailImage : pokemon.name } alt={ pokemon.name }  className="centered-img" />
