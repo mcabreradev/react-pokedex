@@ -1,6 +1,6 @@
 import React from "react";
 import Pokemon from "../Pokemon/Pokemon";
-import firebase from '../../Common/firebase';
+import firebase from "../../libs/firebase";
 
 const styles = {
   marginTop: "20px"
@@ -18,16 +18,17 @@ class Pokedex extends React.Component {
     };
   }
 
-  fetchFirebase () {
-
+  fetchFirebase() {
     // if exist localstorage
-    if(localStorage.getItem("pokedex") !== null){
-      return this.setState({ pokedex: JSON.parse(localStorage.getItem("pokedex")) });
+    if (localStorage.getItem("pokedex") !== null) {
+      return this.setState({
+        pokedex: JSON.parse(localStorage.getItem("pokedex"))
+      });
     }
 
-    const pokemonsRef = firebase.database().ref('pokedex');
-    pokemonsRef.on('value', (snapshot) => {
-      this.setState({ pokedex: snapshot.val()});
+    const pokemonsRef = firebase.database().ref("pokedex");
+    pokemonsRef.on("value", snapshot => {
+      this.setState({ pokedex: snapshot.val() });
       localStorage.setItem("pokedex", JSON.stringify(snapshot.val()));
     });
   }
@@ -39,12 +40,13 @@ class Pokedex extends React.Component {
   render() {
     const { pokedex } = this.state;
 
-    return (pokedex.length > 0) ? (
+    return pokedex.length > 0 ? (
       <div className="container" style={styles}>
         <div className="columns is-multiline">
-          {pokedex.map( (pokemon, key) => (
-            pokemon !== null ? <Pokemon pokemon={ pokemon } key={ key } /> : null
-          ))}
+          {pokedex.map(
+            (pokemon, key) =>
+              pokemon !== null ? <Pokemon pokemon={pokemon} key={key} /> : null
+          )}
         </div>
       </div>
     ) : (
