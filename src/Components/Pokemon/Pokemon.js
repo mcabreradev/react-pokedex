@@ -3,7 +3,7 @@ import React from "react";
 import './Pokemon.css';
 
 const styles = {
-  padding: "5px 5px 5px 0px"
+  padding: "5px 0px 0px 0px"
 };
 
 function NoPokemon() {
@@ -60,8 +60,8 @@ class Pokemon extends React.Component {
     const { pokemon } = this.state;
 
     return pokemon ? (
-      <div className="column is-2-desktop is-3-tablet">
-        <div className="card has-background-white-bis" style={ styles }>
+      <div className="column is-3-desktop is-3-tablet">
+        <div className="card has-background-white" style={ styles }>
           <header className="card-header">
             <img src={ pokemon ? pokemon.ThumbnailImage : pokemon.name } alt={ pokemon.name }  className="centered-img" />
           </header>

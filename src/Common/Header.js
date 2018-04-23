@@ -2,7 +2,7 @@ import React from "react";
 
 function Header() {
   return (
-    <nav className="navbar is-warning">
+    <nav className="navbar is-fixed-top is-warning">
       <div className="navbar-brand">
         <a className="navbar-item has-text-weight-semibold is-size-4">
           Pokedex
