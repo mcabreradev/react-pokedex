@@ -1,7 +1,7 @@
 import React from "react";
 
 import Header from "./components/Header";
-import Pokedex from "./components/Pokedex/Pokedex";
+import Pokedex from "./components/Pokedex";
 
 import "bulma/css/bulma.css";
 

@@ -1,6 +1,6 @@
 import React from "react";
-import Pokemon from "../Pokemon/Pokemon";
-import firebase from "../../libs/firebase";
+import Pokemon from "../Pokemon";
+import FirebaseService from "../../services/firebase.service";
 
 const styles = {
   marginTop: "20px"
@@ -16,25 +16,28 @@ class Pokedex extends React.Component {
         next: null
       }
     };
+
+    this.firebaseService = new FirebaseService();
   }
 
-  fetchFirebase() {
-    // if exist localstorage
+  fetch() {
+    
     if (localStorage.getItem("pokedex") !== null) {
       return this.setState({
         pokedex: JSON.parse(localStorage.getItem("pokedex"))
       });
     }
 
-    const pokemonsRef = firebase.database().ref("pokedex");
-    pokemonsRef.on("value", snapshot => {
-      this.setState({ pokedex: snapshot.val() });
-      localStorage.setItem("pokedex", JSON.stringify(snapshot.val()));
-    });
+    this.firebaseService.getAll("pokedex")
+      .then(pokedex => {
+        this.setState({ pokedex });
+        localStorage.setItem("pokedex", JSON.stringify(pokedex));
+      })
+      .catch(err => console.error(`Error: ${err.message}`));
   }
 
   componentDidMount() {
-    this.fetchFirebase();
+    this.fetch();
   }
 
   render() {

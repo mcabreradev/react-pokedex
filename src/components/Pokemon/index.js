@@ -1,6 +1,6 @@
 import React from "react";
 
-import './Pokemon.css';
+import './styles.css';
 
 const styles = {
   padding: "5px 0px 0px 0px"
