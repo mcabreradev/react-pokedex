@@ -81,7 +81,7 @@ class Pokedex extends React.Component {
 
     const filteredPokedex = pokedex
       .filter(pokemon => {
-        return pokemon.name.toLowerCase().indexOf(name.toLowerCase()) >= 0 && ( selectedType ? pokemon.type.some(type => type === selectedType) : <div>Loading.. Pokedex</div> );
+        return pokemon.name.toLowerCase().indexOf(name.toLowerCase()) >= 0 && ( selectedType ? pokemon.type.some(type => type === selectedType) : true );
       })
       .map(pokemon => {
         return ( 
@@ -115,7 +115,7 @@ class Pokedex extends React.Component {
         </div>
 
         <div className="columns is-multiline">
-           { filteredPokedex.length > 0 ? filteredPokedex :  !loading ? <div className="column"><b>{ name }</b> was not found!, try another name</div> : '' }
+           { filteredPokedex.length > 0 ? filteredPokedex :  !loading ? <div className="column"><b>{ name }</b> was not found!, try another name</div> : <div>Loading.. Pokedex</div> }
         </div>
       </div>
     );
