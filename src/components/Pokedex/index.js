@@ -9,27 +9,50 @@ const styles = {
 class Pokedex extends React.Component {
   constructor(props) {
     super(props);
+
+    // set inital states
     this.state = {
       pokedex: [],
       name: '',
       selectedType: '',
+      weakness: [],
+      abilities: [],
+      types: [],
+      loading: false
     };
 
+    // binding
     this.handleChange = this.handleChange.bind(this);
+
+    // deps injection
     this._FirebaseService = new FirebaseService();
   }
 
   fetch() {
-    
+    this.setState({ loading: true });
+
+    // if exist localstorage
     if (localStorage.getItem("pokedex") !== null) {
+      const pokedex = JSON.parse(localStorage.getItem("pokedex"));
+      
       return this.setState({
-        pokedex: JSON.parse(localStorage.getItem("pokedex"))
+        pokedex: pokedex,
+        weakness: this.getProps(pokedex, 'weakness'),
+        abilities: this.getProps(pokedex, 'abilities'),
+        types : this.getProps(pokedex, 'type'),
+        loading: false
       });
     }
 
     this._FirebaseService.getAll("pokedex")
       .then(pokedex => {
-        this.setState({ pokedex });
+        this.setState({ 
+          pokedex, 
+          weakness: this.getProps(pokedex, 'weakness'),
+          abilities: this.getProps(pokedex, 'abilities'),
+          types : this.getProps(pokedex, 'type'),
+          loading: false 
+        });
         localStorage.setItem("pokedex", JSON.stringify( pokedex ));
       })
       .catch(err => console.error(`Error: ${err.message}`));
@@ -44,26 +67,24 @@ class Pokedex extends React.Component {
     this.setState({ [state] : event.target.value});
   }
 
-  render() {
-    const { pokedex, name, selectedType } = this.state;
-    
-    const selectedTypeOptions = pokedex
-      .map(pokemon => pokemon.type) // set all pokemon types
-      .reduce((a, b) => a.concat(b), []) // flat all pokemon types
+  getProps(arr, prop){
+    return arr.map(pokemon => pokemon[prop]) // set all props
+      .reduce((a, b) => Array.isArray(b) ? a.concat(b): [], []) // flat all props
       .filter((type, pos, arr) => arr.indexOf(type) === pos) // remove duplicates
-      .sort((last, next) => last > next ? 1 : -1) // alphabetical order
-      .map(type => {
-        return (
-          <option value={ type } key={ type }>{ type }</option> 
-        );
-      });
+      .sort((last, next) => last > next ? 1 : -1); // alphabetical order
+  }
+
+  render() {
+    const { pokedex, name, selectedType, loading, types } = this.state;
+
+    const selectedTypeOptions = types.map(type => ( <option value={ type } key={ type }>{ type }</option> ));
 
     const filteredPokedex = pokedex
       .filter(pokemon => {
-        return pokemon.name.toLowerCase().indexOf(name.toLowerCase()) >= 0 && ( selectedType ? pokemon.type.some(type => type === selectedType) : true );
+        return pokemon.name.toLowerCase().indexOf(name.toLowerCase()) >= 0 && ( selectedType ? pokemon.type.some(type => type === selectedType) : <div>Loading.. Pokedex</div> );
       })
       .map(pokemon => {
-        return (
+        return ( 
           <Pokemon pokemon={ pokemon } key={ pokemon.id } />
         ) 
       });
@@ -94,7 +115,7 @@ class Pokedex extends React.Component {
         </div>
 
         <div className="columns is-multiline">
-           { filteredPokedex.length > 0 ? filteredPokedex :  <div className="column"><b>{ name }</b> was not found!, try another name</div> }
+           { filteredPokedex.length > 0 ? filteredPokedex :  !loading ? <div className="column"><b>{ name }</b> was not found!, try another name</div> : '' }
         </div>
       </div>
     );
