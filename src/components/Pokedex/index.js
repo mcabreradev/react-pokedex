@@ -16,7 +16,7 @@ class Pokedex extends React.Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.firebaseService = new FirebaseService();
+    this._FirebaseService = new FirebaseService();
   }
 
   fetch() {
@@ -27,7 +27,7 @@ class Pokedex extends React.Component {
       });
     }
 
-    this.firebaseService.getAll("pokedex")
+    this._FirebaseService.getAll("pokedex")
       .then(pokedex => {
         this.setState({ pokedex });
         localStorage.setItem("pokedex", JSON.stringify( pokedex ));
@@ -46,12 +46,17 @@ class Pokedex extends React.Component {
 
   render() {
     const { pokedex, name, selectedType } = this.state;
-
+    
     const selectedTypeOptions = pokedex
       .map(pokemon => pokemon.type) // set all pokemon types
       .reduce((a, b) => a.concat(b), []) // flat all pokemon types
       .filter((type, pos, arr) => arr.indexOf(type) === pos) // remove duplicates
-      .sort((last, next) => last > next ? 1 : -1); // alphabetical order
+      .sort((last, next) => last > next ? 1 : -1) // alphabetical order
+      .map(type => {
+        return (
+          <option value={ type } key={ type }>{ type }</option> 
+        );
+      });
 
     const filteredPokedex = pokedex
       .filter(pokemon => {
@@ -81,7 +86,7 @@ class Pokedex extends React.Component {
               <div className="select is-large is-fullwidth">
                 <select value={ selectedType } onChange={ this.handleChange } className="is-capitalized">
                   <option value="">{ selectedType === "" ? "Select Type" : "-- Reset Filter" }</option>
-                  { selectedTypeOptions.map(type => <option value={ type } key={ type }>{ type }</option> ) }
+                  { selectedTypeOptions }
                 </select>
               </div>
             </div>
