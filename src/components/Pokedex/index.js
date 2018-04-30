@@ -29,12 +29,13 @@ class Pokedex extends React.Component {
 
     // binding
     this.handleChange = this.handleChange.bind(this);
+    this.fetch = this.fetch.bind(this);
 
     // deps injection
     this._FirebaseService = new FirebaseService();
   }
 
-  fetch() {
+  async fetch() {
     this.setState({ loading: true });
 
     // if exist localstorage
@@ -50,19 +51,21 @@ class Pokedex extends React.Component {
       });
     }
 
-    this._FirebaseService.getAll("pokedex")
-      .then(pokedex => {
-        this.setState({ 
-          pokedex, 
-          weakness: this.getListFromArrKey(pokedex, 'weakness'),
-          abilities: this.getListFromArrKey(pokedex, 'abilities'),
-          types : this.getListFromArrKey(pokedex, 'type'),
-          loading: false 
-        });
-        
-        localStorage.setItem("pokedex", JSON.stringify( pokedex ));
-      })
-      .catch(err => console.error(`Error: ${err.message}`));
+    try {
+      const pokedex = await this._FirebaseService.getAll("pokedex");
+
+      this.setState({ 
+        pokedex, 
+        weakness: this.getListFromArrKey(pokedex, 'weakness'),
+        abilities: this.getListFromArrKey(pokedex, 'abilities'),
+        types : this.getListFromArrKey(pokedex, 'type'),
+        loading: false 
+      });
+
+      localStorage.setItem("pokedex", JSON.stringify( pokedex ));
+    } catch (err) {
+        console.log(`Error: ${err.message}`);
+    }
   }
 
   componentDidMount() {
