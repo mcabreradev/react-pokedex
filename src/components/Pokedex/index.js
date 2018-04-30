@@ -7,6 +7,12 @@ const styles = {
 };
 
 class Pokedex extends React.Component {
+
+  static defaultProps = {
+    renderLoading: <div>loading...</div>, 
+    tryAgain: ((name) => (<div className="column"><b>{ name }</b> was not found!, try another name</div>)), 
+  };
+
   constructor(props) {
     super(props);
 
@@ -37,9 +43,9 @@ class Pokedex extends React.Component {
       
       return this.setState({
         pokedex: pokedex,
-        weakness: this.getProps(pokedex, 'weakness'),
-        abilities: this.getProps(pokedex, 'abilities'),
-        types : this.getProps(pokedex, 'type'),
+        weakness: this.getListFromArrKey(pokedex, 'weakness'),
+        abilities: this.getListFromArrKey(pokedex, 'abilities'),
+        types : this.getListFromArrKey(pokedex, 'type'),
         loading: false
       });
     }
@@ -48,11 +54,12 @@ class Pokedex extends React.Component {
       .then(pokedex => {
         this.setState({ 
           pokedex, 
-          weakness: this.getProps(pokedex, 'weakness'),
-          abilities: this.getProps(pokedex, 'abilities'),
-          types : this.getProps(pokedex, 'type'),
+          weakness: this.getListFromArrKey(pokedex, 'weakness'),
+          abilities: this.getListFromArrKey(pokedex, 'abilities'),
+          types : this.getListFromArrKey(pokedex, 'type'),
           loading: false 
         });
+        
         localStorage.setItem("pokedex", JSON.stringify( pokedex ));
       })
       .catch(err => console.error(`Error: ${err.message}`));
@@ -67,7 +74,7 @@ class Pokedex extends React.Component {
     this.setState({ [state] : event.target.value});
   }
 
-  getProps(arr, prop){
+  getListFromArrKey(arr, prop){
     return arr.map(pokemon => pokemon[prop]) // set all props
       .reduce((a, b) => Array.isArray(b) ? a.concat(b): [], []) // flat all props
       .filter((type, pos, arr) => arr.indexOf(type) === pos) // remove duplicates
@@ -90,32 +97,35 @@ class Pokedex extends React.Component {
       });
 
     return (
-      <div className="container" style={ styles }>
-
-        <div className="columns">
-          <div className="field column is-8">
-            <div className="control is-large has-icons-right">
-              <input className="input is-large" type="text" placeholder="Enter pokemon name" value={ name } onChange={ this.handleChange } />
-              <span className="icon is-medium is-right">
-                <i className="fas fa-search"></i>
-              </span>
+      <div>
+        <div className="container" style={ styles }>
+          <div className="columns"> 
+            <div className="field column is-8">
+              <div className="control is-large has-icons-right">
+                <input className="input is-large" type="text" placeholder="Enter pokemon name" value={ name } onChange={ this.handleChange } />
+                <span className="icon is-medium is-right">
+                  <i className="fas fa-search"></i>
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div className="field column is-4">
-            <div className="control is-expanded">
-              <div className="select is-large is-fullwidth">
-                <select value={ selectedType } onChange={ this.handleChange } className="is-capitalized">
-                  <option value="">{ selectedType === "" ? "Select Type" : "-- Reset Filter" }</option>
-                  { selectedTypeOptions }
-                </select>
+            <div className="field column is-4">
+              <div className="control is-expanded">
+                <div className="select is-large is-fullwidth">
+                  <select value={ selectedType } onChange={ this.handleChange } className="is-capitalized">
+                    <option value="">{ selectedType === "" ? "Select Type" : "-- Reset Filter" }</option>
+                    { selectedTypeOptions }
+                  </select>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="columns is-multiline">
-           { filteredPokedex.length > 0 ? filteredPokedex :  !loading ? <div className="column"><b>{ name }</b> was not found!, try another name</div> : <div>Loading.. Pokedex</div> }
+        <div className="container">
+          <div className="columns is-multiline">
+            { filteredPokedex.length > 0 ? filteredPokedex :  !loading ? this.props.tryAgain(name) : this.props.renderLoading }
+          </div>
         </div>
       </div>
     );
