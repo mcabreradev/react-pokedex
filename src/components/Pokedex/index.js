@@ -2,6 +2,11 @@ import React from "react";
 import Pokemon from "../Pokemon";
 import FirebaseService from "../../services/firebase.service";
 
+// redux
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchPokedex } from '../../actions/pokedexActions';
+
 const styles = {
   marginTop: "20px"
 };
@@ -16,88 +21,36 @@ class Pokedex extends React.Component {
   constructor(props) {
     super(props);
 
-    // set inital states
     this.state = {
-      pokedex: [],
       name: '',
       selectedType: '',
-      weakness: [],
-      abilities: [],
-      types: [],
       loading: false
     };
 
     // binding
-    this.handleChange = this.handleChange.bind(this);
-    this.fetch = this.fetch.bind(this);
+    this.onChange = this.onChange.bind(this);
 
-    // deps injection
+    // dep injection
     this._FirebaseService = new FirebaseService();
   }
 
-  async fetch() {
-    this.setState({ loading: true });
-
-    // if exist localstorage
-    if (localStorage.getItem("pokedex") !== null) {
-      const pokedex = JSON.parse(localStorage.getItem("pokedex"));
-      
-      return this.setState({
-        pokedex: pokedex,
-        weakness: this.getListFromArrKey(pokedex, 'weakness'),
-        abilities: this.getListFromArrKey(pokedex, 'abilities'),
-        types : this.getListFromArrKey(pokedex, 'type'),
-        loading: false
-      });
-    }
-
-    try {
-      const pokedex = await this._FirebaseService.getAll("pokedex");
-
-      this.setState({ 
-        pokedex, 
-        weakness: this.getListFromArrKey(pokedex, 'weakness'),
-        abilities: this.getListFromArrKey(pokedex, 'abilities'),
-        types : this.getListFromArrKey(pokedex, 'type'),
-        loading: false 
-      });
-
-      localStorage.setItem("pokedex", JSON.stringify( pokedex ));
-    } catch (err) {
-        console.log(`Error: ${err.message}`);
-    }
+  componentWillMount() {
+    this.props.fetchPokedex();
   }
 
-  componentDidMount() {
-    this.fetch();
-  }
-
-  handleChange(event) {
-    const state = event.target.type === "text" ?  "name": "selectedType";
-    this.setState({ [state] : event.target.value});
-  }
-
-  getListFromArrKey(arr, prop){
-    return arr.map(pokemon => pokemon[prop]) // set all props
-      .reduce((a, b) => Array.isArray(b) ? a.concat(b): [], []) // flat all props
-      .filter((type, pos, arr) => arr.indexOf(type) === pos) // remove duplicates
-      .sort((last, next) => last > next ? 1 : -1); // alphabetical order
+  onChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   render() {
-    const { pokedex, name, selectedType, loading, types } = this.state;
-
-    const selectedTypeOptions = types.map(type => ( <option value={ type } key={ type }>{ type }</option> ));
-
+    const { pokedex, types } = this.props; 
+    const { name, selectedType } = this.state;
+  
     const filteredPokedex = pokedex
       .filter(pokemon => {
         return pokemon.name.toLowerCase().indexOf(name.toLowerCase()) >= 0 && ( selectedType ? pokemon.type.some(type => type === selectedType) : true );
       })
-      .map(pokemon => {
-        return ( 
-          <Pokemon pokemon={ pokemon } key={ pokemon.id } />
-        ) 
-      });
+      .map(pokemon => (<Pokemon pokemon={ pokemon } key={ pokemon.id } />));
 
     return (
       <div>
@@ -105,7 +58,7 @@ class Pokedex extends React.Component {
           <div className="columns"> 
             <div className="field column is-8">
               <div className="control is-large has-icons-right">
-                <input className="input is-large" type="text" placeholder="Enter pokemon name" value={ name } onChange={ this.handleChange } />
+                <input className="input is-large" type="text" placeholder="Enter pokemon name" name="name" value={ name } onChange={ this.onChange } />
                 <span className="icon is-medium is-right">
                   <i className="fas fa-search"></i>
                 </span>
@@ -115,9 +68,9 @@ class Pokedex extends React.Component {
             <div className="field column is-4">
               <div className="control is-expanded">
                 <div className="select is-large is-fullwidth">
-                  <select value={ selectedType } onChange={ this.handleChange } className="is-capitalized">
+                  <select name="selectedType" value={ selectedType } onChange={ this.onChange } className="is-capitalized">
                     <option value="">{ selectedType === "" ? "Select Type" : "-- Reset Filter" }</option>
-                    { selectedTypeOptions }
+                    { types.map(type => ( <option value={ type } key={ type }>{ type }</option> )) }
                   </select>
                 </div>
               </div>
@@ -127,7 +80,7 @@ class Pokedex extends React.Component {
 
         <div className="container">
           <div className="columns is-multiline">
-            { filteredPokedex.length > 0 ? filteredPokedex :  !loading ? this.props.tryAgain(name) : this.props.renderLoading }
+            { filteredPokedex.length > 0 ? filteredPokedex :  this.props.renderLoading }
           </div>
         </div>
       </div>
@@ -135,4 +88,23 @@ class Pokedex extends React.Component {
   }
 }
 
-export default Pokedex;
+const  getListFromArrKey = (arr, prop) => {
+  return arr.map(pokemon => pokemon[prop]) // set all props
+    .reduce((a, b) => Array.isArray(b) ? a.concat(b): [], []) // flat all props
+    .filter((type, pos, arr) => arr.indexOf(type) === pos) // remove duplicates
+    .sort((last, next) => last > next ? 1 : -1); // alphabetical order
+  }
+
+Pokedex.propTypes = {
+  fetchPokedex: PropTypes.func.isRequired,
+  pokedex: PropTypes.array.isRequired
+};
+
+const mapStateToProps = state => ({
+  pokedex: state.pokedex.pokedex,
+  weakness: getListFromArrKey(state.pokedex.pokedex, 'weakness'),
+  abilities: getListFromArrKey(state.pokedex.pokedex, 'abilities'),
+  types : getListFromArrKey(state.pokedex.pokedex, 'type'),
+});
+
+export default connect(mapStateToProps, { fetchPokedex })(Pokedex);

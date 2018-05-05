@@ -14,50 +14,40 @@ function NoPokemon() {
   );
 }
 
+function getTypeClassname(name) {
+  let _class = "has-background-primary has-text-white";
+
+  if ( name === 'poison') {
+    _class = "has-background-danger has-text-white"
+  }
+
+  if ( name === 'grass') {
+    _class = "has-background-success has-text-white"
+  }
+
+  if ( name === 'fire') {
+    _class = "has-background-warning has-text-black"
+  }
+
+  if ( name === 'water') {
+    _class = "has-background-info has-text-white"
+  }
+
+  if ( name === 'ground') {
+    _class = "has-background-grey-light has-text-white"
+  }
+
+  if ( name === 'flying') {
+    _class = "has-background-link has-text-light"
+  }
+
+  return _class;
+}
+
 class Pokemon extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pokemon: {}
-    };
-  }
-
-  componentDidMount() {
-    this.setState({pokemon: this.props.pokemon})
-  }
-
-  getTypeClassname (name){
-    let _class = "has-background-primary has-text-white";
-
-    if ( name === 'poison') {
-      _class = "has-background-danger has-text-white"
-    }
-
-    if ( name === 'grass') {
-      _class = "has-background-success has-text-white"
-    }
-
-    if ( name === 'fire') {
-      _class = "has-background-warning has-text-black"
-    }
-
-    if ( name === 'water') {
-      _class = "has-background-info has-text-white"
-    }
-
-    if ( name === 'ground') {
-      _class = "has-background-grey-light has-text-white"
-    }
-
-    if ( name === 'flying') {
-      _class = "has-background-link has-text-light"
-    }
-
-    return _class;
-  }
 
   render() {
-    const { pokemon } = this.state;
+    const { pokemon } = this.props;
 
     return pokemon ? (
       <div className="column is-3-desktop is-3-tablet">
@@ -77,7 +67,7 @@ class Pokemon extends React.Component {
 
           <footer className="card-footer">
             { pokemon.type ? pokemon.type.map((type, key) => (
-              <p className={ "card-footer-item is-size-7 has-text-weight-bold " + this.getTypeClassname(type) } key={ key } >{  type }</p>
+              <p className={ "card-footer-item is-size-7 has-text-weight-bold " + getTypeClassname(type) } key={ key } >{  type }</p>
             )) : ''}
           </footer>
 
