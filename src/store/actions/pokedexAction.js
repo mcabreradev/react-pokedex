@@ -3,11 +3,12 @@ import {
   GET_TYPES,
   GET_WEAKNESS,
   GET_ABILITIES,
-  // GET_NAME,
   SET_NAME,
-  // GET_SELECTED_TYPE,
-  SET_SELECTED_TYPE
+  SET_SELECTED_TYPE,
+  SET_SELECTED_WEAKNESS,
+  SET_SELECTED_ABILITIES,
 } from './types';
+
 import Firebase from "../../services/firebase";
 const firebase = new Firebase();
 
@@ -59,3 +60,19 @@ export const setSelectedType = (selectedType) => dispatch => {
     payload: selectedType
   });
 };
+
+export const setSelectedWeakness = (selectedWeakness) => dispatch => { 
+  dispatch({
+    type: SET_SELECTED_WEAKNESS,
+    payload: selectedWeakness
+  });
+};
+
+export const setSelectedAbilities = (selectedAbility) => dispatch => { 
+  dispatch({
+    type: SET_SELECTED_ABILITIES,
+    payload: selectedAbility
+  });
+};
+
+

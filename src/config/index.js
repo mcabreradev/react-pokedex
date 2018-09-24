@@ -3,6 +3,7 @@ export const techs = [
     "redux",
     "firebase",
     "bulma",
+    "flowtype"
 ];
 
 export const firebaseConfig = {
