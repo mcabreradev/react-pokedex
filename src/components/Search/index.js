@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Loading from '../Loading';
 import {
     setName,
     setSelectedType,
@@ -48,10 +49,13 @@ class Search extends Component {
     }
 
     render() {
-        const { types, name, selectedType, weakness, selectedWeakness, abilities, selectedAbilities } = this.props;
+        const { types, name, selectedType, weakness, selectedWeakness, abilities, selectedAbilities, isLoading } = this.props;
 
         return (
             <div>
+
+                <Loading isActive={ isLoading }/>
+
                 <div className="container" style={ styles }>
                     <div className="columns"> 
                         <div className="field column is-3">
@@ -152,6 +156,7 @@ const mapStateToProps = state => ({
     selectedType: state.pokedex.selectedType,
     selectedWeakness: state.pokedex.selectedWeakness,
     selectedAbilities: state.pokedex.selectedAbilities,
+    isLoading: state.pokedex.isLoading,
  });
 
 export default connect(mapStateToProps, {

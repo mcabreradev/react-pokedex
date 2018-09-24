@@ -6,7 +6,8 @@ import {
   SET_NAME,
   SET_SELECTED_TYPE,
   SET_SELECTED_WEAKNESS,
-  SET_SELECTED_ABILITIES
+  SET_SELECTED_ABILITIES,
+  IS_LOADING
 } from '../actions/types';
 
 const initialState = {
@@ -15,7 +16,8 @@ const initialState = {
   weakness: [],
   abilities: [],
   name: "",
-  selectedType: ""
+  selectedType: "",
+  isLoading: false
 };
 
 export default function (state = initialState, action) {
@@ -67,6 +69,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         selectedAbilities: action.payload
+      };
+    
+    case IS_LOADING:
+      return {
+        ...state,
+        isLoading: action.payload
       };
 
     default:
