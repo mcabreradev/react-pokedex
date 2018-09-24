@@ -8,71 +8,49 @@ import {
   SET_SELECTED_WEAKNESS,
   SET_SELECTED_ABILITIES,
 } from './types';
+import { getListFromArrKey } from '../../util';
+import firebase from "../../services/firebase";
 
-import Firebase from "../../services/firebase";
-const firebase = new Firebase();
-
-export const fetchPokedex = () => dispatch => {
-
-  firebase.fetch("pokedex").then(pokedex => {
-
-    dispatch({
-      type: FETCH_POKEDEX,
-      payload: pokedex
-    });
-
-    dispatch({
-      type: GET_TYPES,
-      payload: getListFromArrKey(pokedex, 'type')
-    });
-
-    dispatch({
-      type: GET_WEAKNESS,
-      payload: getListFromArrKey(pokedex, 'weakness')
-    });
-
-    dispatch({
-      type: GET_ABILITIES,
-      payload: getListFromArrKey(pokedex, 'abilities')
-    });
-
-  });
-};
-
-const getListFromArrKey = (arr, key) => {
-
-  return arr.map(item => item[key]) // set all keys
-    .reduce((a, b) => Array.isArray(b) ? a.concat(b) : [], []) // flat all keys
-    .filter((key, pos, arr) => arr.indexOf(key) === pos) // remove duplicates
-    .sort((last, next) => last > next ? 1 : -1); // alphabetical order
+export const fetchPokedex = () => async (dispatch) => {
+  try {
+    const pokedex = await firebase.fetch("pokedex");
+    dispatch({type: FETCH_POKEDEX, payload: pokedex});
+    dispatch({type: GET_TYPES, payload: getListFromArrKey(pokedex, 'type')});
+    dispatch({type: GET_WEAKNESS, payload: getListFromArrKey(pokedex, 'weakness')});
+    dispatch({type: GET_ABILITIES, payload: getListFromArrKey(pokedex, 'abilities')});
+  } catch (error) {
+    console.log('fetchPokedex action error', error);
+  }
 };
 
 export const setName = (name) => dispatch => { 
-  dispatch({
-    type: SET_NAME,
-    payload: name
-  });
+  try {
+    dispatch({type: SET_NAME, payload: name});
+  } catch (error) {
+    console.log('setName action error', error);
+  }
 };
 
 export const setSelectedType = (selectedType) => dispatch => { 
-  dispatch({
-    type: SET_SELECTED_TYPE,
-    payload: selectedType
-  });
+  try {
+    dispatch({type: SET_SELECTED_TYPE, payload: selectedType});
+  } catch (error) {
+    console.log('setSelectedType action error', error);
+  }
 };
 
 export const setSelectedWeakness = (selectedWeakness) => dispatch => { 
-  dispatch({
-    type: SET_SELECTED_WEAKNESS,
-    payload: selectedWeakness
-  });
+  try {
+    dispatch({type: SET_SELECTED_WEAKNESS, payload: selectedWeakness});
+  } catch (error) {
+    console.log('setSelectedWeakness action error', error);
+  }
 };
 
 export const setSelectedAbilities = (selectedAbility) => dispatch => { 
-  dispatch({
-    type: SET_SELECTED_ABILITIES,
-    payload: selectedAbility
-  });
+  try {
+    dispatch({type: SET_SELECTED_ABILITIES, payload: selectedAbility});
+  } catch (error) {
+    console.log('setSelectedAbilities action error', error);
+  }
 };
-
-
