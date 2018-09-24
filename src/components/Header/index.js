@@ -1,5 +1,5 @@
 import React from 'react';
-import { techs } from "../../config";
+import { techs } from "../../util";
 
 const styles = {
   padding: "19px 0px 0px 0px"
