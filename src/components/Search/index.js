@@ -55,7 +55,7 @@ class Search extends Component {
                 <div className="container" style={ styles }>
                     <div className="columns"> 
                         <div className="field column is-3">
-                            <label class="label">Name</label>
+                            <label className="label">Name</label>
                             <div className="control is-medium has-icons-right">
                                 <input className="input is-medium" type="text" placeholder="Enter pokemon name" name="name" value={ name } onChange={ this.onChange } />
                                 <span className="icon is-medium is-right"><i className="fas fa-search"></i></span>
@@ -63,7 +63,7 @@ class Search extends Component {
                         </div>
     
                         <div className="field column is-3">
-                            <label class="label">Type</label>
+                            <label className="label">Type</label>
                             <div className="control is-expanded">
                                 <div className={ "select is-medium is-fullwidth " + (!types.length ? 'is-loading' : '')}>
                                     <select 
@@ -84,7 +84,7 @@ class Search extends Component {
                         </div>
 
                         <div className="field column is-3">
-                            <label class="label">Weakness</label>
+                            <label className="label">Weakness</label>
                             <div className="control is-expanded">
                                 <div className={ "select is-medium is-fullwidth " + (!weakness.length ? 'is-loading' : '')}>
                                     <select 
@@ -105,7 +105,7 @@ class Search extends Component {
                         </div>
 
                         <div className="field column is-3">
-                            <label class="label">Abilities</label>
+                            <label className="label">Abilities</label>
                             <div className="control is-expanded">
                                 <div className={ "select is-medium is-fullwidth " + (!abilities.length ? 'is-loading' : '')}>
                                     <select 
