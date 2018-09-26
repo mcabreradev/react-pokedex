@@ -21,3 +21,16 @@ export const getListFromArrKey = (arr, key) => {
       .filter((key, pos, arr) => arr.indexOf(key) === pos) // remove duplicates
       .sort((last, next) => last > next ? 1 : -1); // alphabetical order
   };
+
+export const filterPokemons = (state) => {
+    
+    const { pokedex, selectedType, name, selectedWeakness, selectedAbilities, limit } = state;
+    
+    return pokedex.filter(pokemon => {
+        return pokemon.name.toLowerCase().indexOf(name.toLowerCase()) >= 0 
+            && ( selectedType ? pokemon.type.some(type => type === selectedType) : true )
+            && ( (selectedWeakness && pokemon.weakness !== undefined) ? pokemon.weakness.some(weakness => weakness === selectedWeakness) : true )
+            && ( selectedAbilities ? pokemon.abilities.some(abilities => abilities === selectedAbilities) : true );
+        })
+        .slice(0, limit);
+}

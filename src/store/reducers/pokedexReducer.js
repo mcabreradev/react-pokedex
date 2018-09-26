@@ -1,5 +1,6 @@
 import {
   FETCH_POKEDEX,
+  FILTER_POKEDEX,
   GET_TYPES,
   GET_WEAKNESS,
   GET_ABILITIES,
@@ -7,23 +8,37 @@ import {
   SET_SELECTED_TYPE,
   SET_SELECTED_WEAKNESS,
   SET_SELECTED_ABILITIES,
-  IS_LOADING
+  IS_LOADING,
+  INCREMENT_LIMIT,
+  RESET_LIMIT
 } from '../actions/types';
 
+const defaultState ={
+    limit: 16
+}
+
 const initialState = {
+  pokedex: [],
   pokemons: [],
   types: [],
   weakness: [],
   abilities: [],
   name: "",
   selectedType: "",
-  isLoading: false
+  isLoading: false,
+  limit: 16
 };
 
 export default function (state = initialState, action) {
   switch (action.type) {
 
     case FETCH_POKEDEX:
+      return {
+        ...state,
+        pokedex: action.payload
+      };
+    
+    case FILTER_POKEDEX:
       return {
         ...state,
         pokemons: action.payload
@@ -75,6 +90,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: action.payload
+      };
+
+    case INCREMENT_LIMIT:
+      return {
+        ...state,
+        limit: state.limit + action.payload
+      };
+    
+    case RESET_LIMIT:
+      return {
+        ...state,
+        limit: defaultState.limit
       };
 
     default:

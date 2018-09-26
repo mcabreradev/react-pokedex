@@ -28,7 +28,12 @@
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "yarn run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b gh-pages -d build"
+    "deploy": "gh-pages -b gh-pages -d build",
+    "flow": "flow"
   },
-  "homepage": "https://mcabreradev.github.io/react-pokedex"
+  "homepage": "https://mcabreradev.github.io/react-pokedex",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0"
+  }
 }
