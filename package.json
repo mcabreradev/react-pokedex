@@ -34,6 +34,7 @@
   "homepage": "https://mcabreradev.github.io/react-pokedex",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-flow": "^6.23.0"
+    "babel-preset-flow": "^6.23.0",
+    "webpack-dashboard": "^2.0.0"
   }
 }
