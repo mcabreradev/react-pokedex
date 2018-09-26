@@ -40,17 +40,6 @@ class Pokedex extends Component {
         }, 100);
     };
 
-    // filterPokemons(pokemons){
-    //     const { selectedType, name, selectedWeakness, selectedAbilities, limit } = this.props;
-    //     return pokemons.filter(pokemon => {
-    //         return pokemon.name.toLowerCase().indexOf(name.toLowerCase()) >= 0 
-    //             && ( selectedType ? pokemon.type.some(type => type === selectedType) : true )
-    //             && ( (selectedWeakness && pokemon.weakness !== undefined) ? pokemon.weakness.some(weakness => weakness === selectedWeakness) : true )
-    //             && ( selectedAbilities ? pokemon.abilities.some(abilities => abilities === selectedAbilities) : true );
-    //       })
-    //       .slice(0, limit);
-    // }
-
     render() { 
         const { pokemons, selectedType, selectedWeakness, selectedAbilities } = this.props;
         const filteredPokedex = pokemons.map(pokemon => <Pokemon pokemon={ pokemon } key={ pokemon.id } />);
