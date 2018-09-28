@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Loading from '../Loading';
+import Select from '../Select';
 import {
     setName,
     setSelectedType,
@@ -45,7 +46,7 @@ class Search extends Component {
     }
 
     render() {
-        const { types, name, selectedType, weakness, selectedWeakness, abilities, selectedAbilities, isLoading } = this.props;
+        const { name, isLoading } = this.props;
 
         return (
             <div>
@@ -63,68 +64,31 @@ class Search extends Component {
                         </div>
     
                         <div className="field column is-3">
-                            <label className="label">Type</label>
-                            <div className="control is-expanded">
-                                <div className={ "select is-medium is-fullwidth " + (!types.length ? 'is-loading' : '')}>
-                                    <select 
-                                        name="selectedType" 
-                                        value={ selectedType } 
-                                        onChange={ this.onChange } 
-                                        className="is-capitalized" 
-                                        disabled={ !types.length }
-                                        >
-
-                                        <option value="">{ selectedType === "" ? "Select" : "-- Reset Filter" }</option>
-
-                                        { types.map(type => ( <option value={ type } key={ type }>{ type }</option> )) }
-
-                                    </select>
-                                </div>
-                            </div>
+                            <Select 
+                                type="types"
+                                selectName="selectedType" 
+                                onChange={ this.onChange } 
+                                {...this.props}
+                               />
                         </div>
 
                         <div className="field column is-3">
-                            <label className="label">Weakness</label>
-                            <div className="control is-expanded">
-                                <div className={ "select is-medium is-fullwidth " + (!weakness.length ? 'is-loading' : '')}>
-                                    <select 
-                                        name="selectedWeakness" 
-                                        value={ selectedWeakness } 
-                                        onChange={ this.onChange } 
-                                        className="is-capitalized" 
-                                        disabled={ !weakness.length }
-                                        >
-
-                                        <option value="">{ selectedWeakness === "" ? "Select" : "-- Reset Filter" }</option>
-
-                                        { weakness.map(weak => ( <option value={ weak } key={ weak }>{ weak }</option> )) }
-
-                                    </select>
-                                </div>
-                            </div>
+                            <Select 
+                                type="weakness"
+                                selectName="selectedWeakness" 
+                                onChange={ this.onChange } 
+                                {...this.props}
+                               />
                         </div>
 
                         <div className="field column is-3">
-                            <label className="label">Abilities</label>
-                            <div className="control is-expanded">
-                                <div className={ "select is-medium is-fullwidth " + (!abilities.length ? 'is-loading' : '')}>
-                                    <select 
-                                        name="selectedAbilities" 
-                                        value={ selectedAbilities } 
-                                        onChange={ this.onChange } 
-                                        className="is-capitalized" 
-                                        disabled={ !abilities.length }
-                                        >
-
-                                        <option value="">{ selectedAbilities === "" ? "Select" : "-- Reset Filter" }</option>
-
-                                        { abilities.map(ability => ( <option value={ ability } key={ ability }>{ ability }</option> )) }
-
-                                    </select>
-                                </div>
-                            </div>
+                            <Select 
+                                type="abilities"
+                                selectName="selectedAbilities" 
+                                onChange={ this.onChange } 
+                                {...this.props}
+                               />
                         </div>
-
 
                     </div>
                 </div>
