@@ -35,9 +35,11 @@ class Pokedex extends Component {
     }
 
     scrollToBottom () {
-        setTimeout(() => {
-            window.scroll(0, this.refs.pokeScroll.scrollHeight);
-        }, 100);
+        for (let index = 0; index <= this.refs.pokeScroll.scrollHeight; index++) {
+            setTimeout(() => {
+                window.scroll(0, index);
+            }, 200);
+        }
     };
 
     render() { 

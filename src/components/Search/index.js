@@ -50,11 +50,10 @@ class Search extends Component {
 
         return (
             <div>
-
                 <Loading isActive={ isLoading }/>
-
                 <div className="container" style={ styles }>
                     <div className="columns"> 
+
                         <div className="field column is-3">
                             <label className="label">Name</label>
                             <div className="control is-medium has-icons-right">
