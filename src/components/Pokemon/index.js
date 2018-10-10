@@ -54,7 +54,7 @@ class Pokemon extends Component {
         <div className="card has-background-white" style={ styles }>
           <header className="card-header">
             <figure className="image is-128x128 centered-img">
-                <img className="is-rounded" src={ pokemon.ThumbnailImage } alt={ pokemon.name }   />
+                <img className="is-rounded" src={ pokemon.thumbnailImage } alt={ pokemon.name }   />
             </figure>
           </header>
 

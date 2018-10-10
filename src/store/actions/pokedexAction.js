@@ -18,7 +18,7 @@ import {
     filterPokemons
 } from '../../util';
 
-import firebase from "../../services/firebase";
+import api from "../../services/api";
 
 export const fetchPokedex = () => async (dispatch, getState) => {
 
@@ -27,45 +27,9 @@ export const fetchPokedex = () => async (dispatch, getState) => {
         payload: true
     });
 
-    if (localStorage.getItem("pokedex") !== null) {
-        const pokedex = JSON.parse(localStorage.getItem("pokedex"));
-
-        dispatch({
-            type: FETCH_POKEDEX,
-            payload: pokedex
-        });
-
-        dispatch({
-            type: FILTER_POKEDEX,
-            payload: filterPokemons(getState("pokedex").pokedex)
-        });
-
-        dispatch({
-            type: GET_TYPES,
-            payload: getListFromArrKey(pokedex, 'type')
-        });
-
-        dispatch({
-            type: GET_WEAKNESS,
-            payload: getListFromArrKey(pokedex, 'weakness')
-        });
-
-        dispatch({
-            type: GET_ABILITIES,
-            payload: getListFromArrKey(pokedex, 'abilities')
-        });
-
-        dispatch({
-            type: IS_LOADING,
-            payload: false
-        });
-
-        return;
-    }
-
     try {
-        const pokedex = await firebase.fetch("pokedex");
-        localStorage.setItem("pokedex", JSON.stringify(pokedex));
+        const response = await api.getAll();
+        const pokedex = response.data.data;
 
         dispatch({
             type: FETCH_POKEDEX,

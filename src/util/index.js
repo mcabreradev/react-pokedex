@@ -1,7 +1,9 @@
 export const techs = [
     "react",
     "redux",
-    "firebase",
+    "axios",
+    "mongo",
+    "heroku",
     "bulma",
     "flowtype"
 ];
